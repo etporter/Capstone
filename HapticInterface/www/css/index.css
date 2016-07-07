@@ -1,0 +1,28 @@
+html {
+	overflow:hidden;
+}
+
+body {
+    margin: 2vh;
+    max-width:100%;
+}
+
+h1 {
+    font-size:24px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+}
+
+button {
+	width: 100vw;
+	height: 5vh;
+	font-size: 3vh;
+	max-width:100%;
+}
+
+canvas {
+	max-width:100%;
+}

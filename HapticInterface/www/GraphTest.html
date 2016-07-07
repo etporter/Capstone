@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<link rel="stylesheet" type="text/css" href="css/GraphTest.css">
+  <head>
+  <meta name="viewport" id="viewport"
+ content="width=device-width, height=device-height,
+ initial-scale=1.0, maximum-scale=1.0,
+ user-scalable=no;" />
+    <title>VibrationTest</title>
+
+          <script type="text/javascript" charset="utf-8" src="cordova-1.5.0.js"></script>      
+          <script type="text/javascript" charset="utf-8">
+
+			function makePoints()
+			{
+				return [[0,0],[50,75],[100,125],[150,75],[200,65],[250,60]];
+			}
+
+			function onLoad()
+			{
+				document.addEventListener("deviceready", onDeviceReady, true);
+			}
+
+			function onDeviceReady()
+			{
+
+			}
+
+			function vibration()
+			{
+				var time = 3000;
+				navigator.vibrate(time);
+			}
+			
+			function goToIndex()
+            {
+				window.location = "index.html";
+        	}
+        	
+			function drawGraph ()
+        	{
+				var c = document.getElementById("myCanvas");
+				var ctx = c.getContext("2d");
+				
+				points = makePoints();
+				
+				ctx.lineWidth=3;
+				ctx.moveTo(points[0][0],points[0][1]);
+				
+				for (var i = 1; i < points.length; i++)
+				{
+					ctx.lineTo(points[i][0],points[i][1]);
+					ctx.stroke();
+				}
+			}
+			
+          </script>
+
+  </head>
+
+  <body onload="onLoad();">
+  		</br>
+  		<h1>Welcome to Haptigraphs!</h1>
+  		</br>
+        <button name = "gotoindex" onclick = "goToIndex()">Home</button>
+        </br>
+        </br>
+        <button name = "drawgraph" onclick = "drawGraph()">Draw Graph</button>
+        </br>
+        </br>
+        <div>
+        	<canvas id="myCanvas" style="border:1px solid #000000; width:100vw; height:70vh;">
+			</canvas>
+		</div>
+  </body>
+

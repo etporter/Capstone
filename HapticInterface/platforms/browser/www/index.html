@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+  <head>
+  	<meta name="viewport" id="viewport"
+ content="width=device-width, height=device-height,
+ initial-scale=1.0, maximum-scale=1.0,
+ user-scalable=no;" />
+    <title>VibrationTest</title>
+
+          <script type="text/javascript" charset="utf-8" src="cordova-1.5.0.js"></script>      
+          <script type="text/javascript" charset="utf-8">
+
+             function onLoad()
+             {
+                  
+             }
+
+             function onDeviceReady()
+             {
+				
+             }
+
+            function vibration() {
+			   var time = 3000;
+			   navigator.vibrate(time);
+			}
+			
+			function GoToGraphTest()
+            {
+                    window.location = "GraphTest.html";
+        	}
+        	
+        	function GoToVibrateTest()
+            {
+                    window.location = "VibrateTest.html";
+        	}
+
+
+          </script>
+
+  </head>
+
+  <body onload="onLoad();">
+  		</br>
+  		<h1>Welcome to Haptigraphs!</h1>
+  		</br>
+        <button name = "gotovibratetest" onclick = "GoToVibrateTest()">Input Data</button>
+        </br>
+        </br>
+        <button name = "gotographtest" onclick = "GoToGraphTest()">View Graph</button>
+  </body>
+
