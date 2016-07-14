@@ -21,13 +21,15 @@
 				
              }
 
-            function vibration() {
+            function vibration()
+            {
 			   var time = 3000;
 			   navigator.vibrate(time);
 			}
 
-			function vibrationPattern() {
-			   var pattern = [1000, 1000, 1000, 1000];
+			function vibrationPattern()
+			{
+			   var pattern = [200, 100, 200, 100, 200];
 			   navigator.vibrate(pattern);
 			}
 			
@@ -41,9 +43,11 @@
   </head>
 
   <body onload="onLoad();">
-  		<h1>Welcome to PhoneGap</h1>
-        <h2>Edit assets/www/index.html</h2>
+  		</br>
+  		<h1>Welcome to Haptigraphs!</h1>
+  		</br>
         <button name = "gotoindex" onclick = "GoToIndex()">Home</button>
+        </br>
         </br>
         <button name = "vibration" onclick = "vibration()">VIBRATION</button>
         </br>
