@@ -21,10 +21,6 @@
 				
              }
 
-            function vibration() {
-			   var time = 3000;
-			   navigator.vibrate(time);
-			}
 			
 			function GoToGraphTest()
             {
@@ -35,7 +31,11 @@
             {
                     window.location = "VibrateTest.html";
         	}
-
+        	
+        	function GoToTouchTest()
+            {
+                    window.location = "touchTest.html";
+        	}
 
           </script>
 
@@ -49,5 +49,8 @@
         </br>
         </br>
         <button name = "gotographtest" onclick = "GoToGraphTest()">View Graph</button>
+        </br>
+        </br>
+        <button name = "gototouchtest" onclick = "GoToTouchTest()">Touch Test</button>
   </body>
 

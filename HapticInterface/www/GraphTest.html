@@ -11,15 +11,26 @@
           <script type="text/javascript" charset="utf-8" src="cordova-1.5.0.js"></script>      
           <script type="text/javascript" charset="utf-8">
 
+			var points = [];
+			var touchPoint = [];
+			
+			function readPointsFromFile()
+			{
+			
+				var rawPoints = [];
+			}
+			
 			function makePoints()
 			{
-				var inPoints = [[0,0],[50,75],[100,125],[150,75],[200,65],[250,60]];
+				var inPoints = [[0,77],[1,83],[2,77],[3,80],[4,85]];
 				
 				var mappedPoints = mapPoints(inPoints);
 
 				var outPoints = flipY(mappedPoints);
 				
 				return outPoints;
+				//return mappedPoints;
+				//return inPoints;
 			}
 			
 			function mapPoints(inPoints)
@@ -27,8 +38,10 @@
 				var canvas = document.getElementById('myCanvas');
 				var width = canvas.width;
 				var height = canvas.height;
-				var xMax = 0;
-				var yMax = 0;
+				var xMax = inPoints[0][0];
+				var yMax = inPoints[0][1];
+				var xMin = inPoints[0][0];
+				var yMin = inPoints[0][1];
 				
 				var outPoints = [];
 				
@@ -38,15 +51,37 @@
 				{
 					if(inPoints[i][0] > xMax) xMax = inPoints[i][0];
 					if(inPoints[i][1] > yMax) yMax = inPoints[i][1];
+					
+					if(inPoints[i][0] < xMin) xMin = inPoints[i][0];
+					if(inPoints[i][1] < yMin) yMin = inPoints[i][1];
 				}
 				
-				var xScale = width / xMax;
-				var yScale = height / yMax;
+				var xScale = width / (xMax - xMin);
+				var yScale = height / (yMax - yMin);
+				
+				console.log("Canvas width:",width);
+				console.log("Canvas height:",height);
+				console.log("xMax:",xMax);
+				console.log("xMin:",xMin);
+				console.log("yMax:",yMax);
+				console.log("yMin:",yMin);
+				console.log("xScale",xScale);
+				console.log("yScale",yScale);
 				
 				for (var i = 0; i < inPoints.length; i++)
 				{
 					outPoints[i][0] = inPoints[i][0] * xScale;
-					outPoints[i][1] = inPoints[i][1] * yScale;
+					outPoints[i][1] = (inPoints[i][1] - yMin) * yScale;
+				}
+				
+				for (var i = 0; i < inPoints.length; i++)
+				{
+					console.log(inPoints[i][0],inPoints[i][1])
+				}
+				
+				for (var i = 0; i < outPoints.length; i++)
+				{
+					console.log(outPoints[i][0],outPoints[i][1])
 				}
 				
 				return outPoints;
@@ -73,13 +108,63 @@
 
 			function onLoad()
 			{
+				var canvas = document.getElementById("myCanvas");
+				
+				resizeCanvas();
+				
+				canvas.addEventListener("touchstart", handleStart, false);
+				canvas.addEventListener("touchend", handleEnd, false);
+				canvas.addEventListener("touchcancel", handleCancel, false);
+				canvas.addEventListener("touchleave", handleEnd, false);
+				canvas.addEventListener("touchmove", handleMove, false);
+				
+				window.addEventListener('orientationchange', onRotate);
+  
 				document.addEventListener("deviceready", onDeviceReady, true);
+				drawGraph();
+			}
+			
+			function resizeCanvas()
+			{
+				var div = document.getElementById("myDiv");
+				var canvas = document.getElementById("myCanvas");
+				canvas.width = div.clientWidth;
+				canvas.height = div.clientHeight;
 				drawGraph();
 			}
 
 			function onDeviceReady()
 			{
 
+			}
+			
+			function handleStart(evt)
+			{
+				evt.preventDefault();
+			}
+			
+			function handleEnd(evt)
+			{
+				evt.preventDefault();
+			}
+			
+			function handleCancel(evt)
+			{
+				evt.preventDefault();
+			}
+			
+			function handleEnd(evt)
+			{
+				evt.preventDefault();
+			}
+			
+			function handleMove(evt)
+			{
+				evt.preventDefault();
+				
+				var touches = evt.changedTouches;
+				touchPoint[0] = touches[touches.length-1].screenX;
+				touchPoint[1] = touches[touches.length-1].screenY;
 			}
 
 			function vibration()
@@ -98,7 +183,7 @@
 				var c = document.getElementById("myCanvas");
 				var ctx = c.getContext("2d");
 				
-				var points = makePoints();
+				points = makePoints();
 
 				ctx.lineWidth=3;
 				ctx.moveTo(points[0][0],points[0][1]);
@@ -109,6 +194,43 @@
 					ctx.stroke();
 				}
 			}
+			
+			//http://stackoverflow.com/questions/17692922/check-is-a-point-x-y-is-between-two-points-drawn-on-a-straight-line
+			
+			function distance(A,B)
+			{
+				return Math.sqrt(Math.pow(A[0]-B[0], 2) + Math.pow(A[1]-B[1], 2));
+			}
+			
+			function checkPoint(points, point)
+			{
+				var retBool = false;
+				
+				for (var i = 0; i < points.length-1; i++)
+				{
+					// include a margin of error
+					retBool = distance(points[i], points[i+1]) - 3 < distance(points[i], point) + distance(points[i+1], point) < distance(points[i], points[i+1] + 3)
+					if (retBool == true) break;
+				}
+				
+				return retBool;
+			}
+			
+			function onRotate()
+  			{
+  				switch(window.orientation) 
+  				{  
+  					case -90:
+  					resizeCanvas();
+  					break;
+  					case 90:
+  					resizeCanvas();
+  					break; 
+  					default:
+  					resizeCanvas();
+  					break; 
+  				}
+  			}
 			
           </script>
 
@@ -126,8 +248,8 @@
         </br>
         </br>
  -->
-        <div>
-        	<canvas id="myCanvas" style="border:1px solid #000000; width:100vw; height:95vh;">
+        <div id="myDiv">
+        	<canvas id="myCanvas" style="border:1px solid #000000;">
 			</canvas>
 		</div>
   </body>
