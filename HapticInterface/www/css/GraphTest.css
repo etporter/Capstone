@@ -1,8 +1,11 @@
 html {
 	overflow:hidden;
-	width:95%;
-	height:95%;
-	margin: 5%;
+	width:98vw;
+	height:98vh;
+	margin-top: 1vh;
+	margin-right: 1vw;
+	margin-bottom: 1vh;
+	margin-left: 1vw;
 	padding: 0;
 }
 
@@ -21,9 +24,8 @@ div {
 	padding: 0;
 }
 
-/* 
+
 canvas {
-	width:95vw;
-	height:95vh;
+	margin: 0%;
+	padding: 0;
 }
- */
