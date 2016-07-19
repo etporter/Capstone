@@ -135,14 +135,11 @@
 			
 			function resizeCanvas()
 			{
-				sleep(100).then(() => 
-				{
-					var div = document.getElementById("myDiv");
-					var canvas = document.getElementById("myCanvas");
-					canvas.width = div.clientWidth;
-					canvas.height = div.clientHeight;
-					drawGraph();
-				})
+				var div = document.getElementById("myDiv");
+				var canvas = document.getElementById("myCanvas");
+				canvas.width = div.clientWidth;
+				canvas.height = div.clientHeight;
+				drawGraph();
 			}
 
 			function onDeviceReady()
@@ -295,13 +292,22 @@
   				switch(window.orientation) 
   				{  
   					case -90:
-  					resizeCanvas();
+  					sleep(100).then(() => 
+					{
+						resizeCanvas();
+					})
   					break;
   					case 90:
-  					resizeCanvas();
+  					sleep(100).then(() => 
+					{
+						resizeCanvas();
+					})
   					break; 
   					default:
-  					resizeCanvas();
+  					sleep(100).then(() => 
+					{
+						resizeCanvas();
+					})
   					break; 
   				}
   			}
