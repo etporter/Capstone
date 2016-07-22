@@ -18,6 +18,106 @@
 			var height;
 			var pulsePattern = [100,300,100,300,100,300,100,300,100,300,100,300];
 			
+			function resizeCanvas()
+			{
+				var div = document.getElementById("myDiv");
+				var canvas = document.getElementById("myCanvas");
+				canvas.width = div.clientWidth;
+				canvas.height = div.clientHeight;
+				drawGraph();
+			}
+			
+			function onLoad()
+			{
+				var canvas = document.getElementById("myCanvas");
+				
+				resizeCanvas();
+				
+				canvas.addEventListener("touchstart", handleStart, false);
+				canvas.addEventListener("touchend", handleEnd, false);
+				canvas.addEventListener("touchcancel", handleCancel, false);
+				canvas.addEventListener("touchleave", handleEnd, false);
+				canvas.addEventListener("touchmove", handleMove, false);
+				
+				window.addEventListener('orientationchange', onRotate);
+  
+				document.addEventListener("deviceready", onDeviceReady, true);
+			}
+			
+			function onDeviceReady()
+			{
+
+			}
+			
+			//Touch event handlers
+			
+			function handleStart(evt)
+			{
+				evt.preventDefault();
+				var touches = evt.changedTouches;
+				touchPoint[0] = touches[touches.length-1].pageX;
+				touchPoint[1] = touches[touches.length-1].pageY;
+				
+				mapTouch();
+								
+ 				console.log("X:",touchPoint[0]);
+ 				console.log("Y:",touchPoint[1]);
+// 				console.log(mappedTouchPoint[0],mappedTouchPoint[1]);
+				
+				console.log(checkPoint(touchPoint));
+				
+				if (checkPoint(touchPoint) == 1) navigator.vibrate(3000);	
+				else if (checkPoint(touchPoint) == 2)
+				{
+					navigator.vibrate(0);
+					navigator.vibrate(pulsePattern);
+				}
+				else navigator.vibrate(0);
+			}
+			
+			function handleEnd(evt)
+			{
+				evt.preventDefault();
+			}
+			
+			function handleCancel(evt)
+			{
+				evt.preventDefault();
+			}
+			
+			function handleEnd(evt)
+			{
+				navigator.vibrate(0);
+				evt.preventDefault();
+			}
+			
+			function handleMove(evt)
+			{
+				evt.preventDefault();
+				
+				navigator.vibrate(0);
+				
+				var touches = evt.changedTouches;
+				touchPoint[0] = touches[touches.length-1].pageX;
+				touchPoint[1] = touches[touches.length-1].pageY;
+				
+				mapTouch();
+				
+ 				console.log("X:",touchPoint[0]);
+ 				console.log("Y:",touchPoint[1]);
+// 				console.log(mappedTouchPoint[0],mappedTouchPoint[1]);
+				
+				console.log(checkPoint(touchPoint));
+				
+				if (checkPoint(touchPoint) == 1) navigator.vibrate(3000);	
+				else if (checkPoint(touchPoint) == 2)
+				{
+					navigator.vibrate(0);
+					navigator.vibrate(pulsePattern);
+				}
+				else navigator.vibrate(0);
+			}
+
 			function readPointsFromFile()
 			{
 				var rawPoints = [];
@@ -25,7 +125,7 @@
 			
 			function makePoints()
 			{
-				var inPoints = [[1,77],[2,83],[3,77],[4,80],[5,85]];
+				var inPoints = [[1,65],[2,67],[3,82],[4,90],[5,89],[6,86],[7,93],[8,90],[9,83],[10,86]];
 				
 				var mappedPoints = mapPoints(inPoints);
 
@@ -110,110 +210,12 @@
 				mappedTouchPoint[0] = touchPoint[0];
 				mappedTouchPoint[1] = height - touchPoint[1];
 			}
-
-			function onLoad()
-			{
-				var canvas = document.getElementById("myCanvas");
-				
-				resizeCanvas();
-				
-				canvas.addEventListener("touchstart", handleStart, false);
-				canvas.addEventListener("touchend", handleEnd, false);
-				canvas.addEventListener("touchcancel", handleCancel, false);
-				canvas.addEventListener("touchleave", handleEnd, false);
-				canvas.addEventListener("touchmove", handleMove, false);
-				
-				window.addEventListener('orientationchange', onRotate);
-  
-				document.addEventListener("deviceready", onDeviceReady, true);
-			}
 			
 			function sleep (time)
 			{
   				return new Promise((resolve) => setTimeout(resolve, time));
 			}
 			
-			function resizeCanvas()
-			{
-				var div = document.getElementById("myDiv");
-				var canvas = document.getElementById("myCanvas");
-				canvas.width = div.clientWidth;
-				canvas.height = div.clientHeight;
-				drawGraph();
-			}
-
-			function onDeviceReady()
-			{
-
-			}
-			
-			function handleStart(evt)
-			{
-				evt.preventDefault();
-				var touches = evt.changedTouches;
-				touchPoint[0] = touches[touches.length-1].pageX;
-				touchPoint[1] = touches[touches.length-1].pageY;
-				
-				mapTouch();
-								
- 				console.log("X:",touchPoint[0]);
- 				console.log("Y:",touchPoint[1]);
-// 				console.log(mappedTouchPoint[0],mappedTouchPoint[1]);
-				
-				console.log(checkPoint(touchPoint));
-				
-				if (checkPoint(touchPoint) == 1) navigator.vibrate(3000);	
-				else if (checkPoint(touchPoint) == 2)
-				{
-					navigator.vibrate(0);
-					navigator.vibrate(pulsePattern);
-				}
-				else navigator.vibrate(0);
-			}
-			
-			function handleEnd(evt)
-			{
-				evt.preventDefault();
-			}
-			
-			function handleCancel(evt)
-			{
-				evt.preventDefault();
-			}
-			
-			function handleEnd(evt)
-			{
-				navigator.vibrate(0);
-				evt.preventDefault();
-			}
-			
-			function handleMove(evt)
-			{
-				evt.preventDefault();
-				
-				navigator.vibrate(0);
-				
-				var touches = evt.changedTouches;
-				touchPoint[0] = touches[touches.length-1].pageX;
-				touchPoint[1] = touches[touches.length-1].pageY;
-				
-				mapTouch();
-				
- 				console.log("X:",touchPoint[0]);
- 				console.log("Y:",touchPoint[1]);
-// 				console.log(mappedTouchPoint[0],mappedTouchPoint[1]);
-				
-				console.log(checkPoint(touchPoint));
-				
-				if (checkPoint(touchPoint) == 1) navigator.vibrate(3000);	
-				else if (checkPoint(touchPoint) == 2)
-				{
-					navigator.vibrate(0);
-					navigator.vibrate(pulsePattern);
-				}
-				else navigator.vibrate(0);
-			}
-
 			function goToIndex()
             {
 				window.location = "index.html";

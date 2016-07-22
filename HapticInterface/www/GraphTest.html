@@ -18,99 +18,15 @@
 			var height;
 			var pulsePattern = [100,300,100,300,100,300,100,300,100,300,100,300];
 			
-			function readPointsFromFile()
+			function resizeCanvas()
 			{
-				var rawPoints = [];
+				var div = document.getElementById("myDiv");
+				var canvas = document.getElementById("myCanvas");
+				canvas.width = div.clientWidth;
+				canvas.height = div.clientHeight;
+				drawGraph();
 			}
 			
-			function makePoints()
-			{
-				var inPoints = [[1,77],[2,83],[3,77],[4,80],[5,85]];
-				
-				var mappedPoints = mapPoints(inPoints);
-
-				var outPoints = flipY(mappedPoints);
-				
-				return outPoints;
-				//return mappedPoints;
-				//return inPoints;
-			}
-			
-			function mapPoints(inPoints)
-			{
-				var canvas = document.getElementById('myCanvas');
-				width = canvas.width;
-				height = canvas.height;
-				var xMax = inPoints[0][0];
-				var yMax = inPoints[0][1];
-				var xMin = inPoints[0][0];
-				var yMin = inPoints[0][1];
-				
-				var outPoints = [];
-				
-				for (var i = 0; i < inPoints.length; i++) outPoints[i] = inPoints[i].slice();
-
-				for (var i = 0; i < inPoints.length; i++)
-				{
-					if(inPoints[i][0] > xMax) xMax = inPoints[i][0];
-					if(inPoints[i][1] > yMax) yMax = inPoints[i][1];
-					
-					if(inPoints[i][0] < xMin) xMin = inPoints[i][0];
-					if(inPoints[i][1] < yMin) yMin = inPoints[i][1];
-				}
-				
-				var xScale = (width - 12) / (xMax - xMin);
-				var yScale = (height - 12) / (yMax - yMin);
-				
-				console.log("Canvas width:",width);
-				console.log("Canvas height:",height);
-				console.log("xMax:",xMax);
-				console.log("xMin:",xMin);
-				console.log("yMax:",yMax);
-				console.log("yMin:",yMin);
-				console.log("xScale",xScale);
-				console.log("yScale",yScale);
-				
-				for (var i = 0; i < inPoints.length; i++)
-				{
-					outPoints[i][0] = ((inPoints[i][0] - xMin) * xScale) + 6;
-					outPoints[i][1] = ((inPoints[i][1] - yMin) * yScale) + 6;
-				}
-				
-// 				for (var i = 0; i < inPoints.length; i++)
-// 				{
-// 					console.log(inPoints[i][0],inPoints[i][1])
-// 				}
-// 				
-// 				for (var i = 0; i < outPoints.length; i++)
-// 				{
-// 					console.log(outPoints[i][0],outPoints[i][1])
-// 				}
-				
-				return outPoints;
-			}
-
-			function flipY(inPoints)
-			{
-				var outPoints = [];
-				
-				for (var i = 0; i < inPoints.length; i++) outPoints[i] = inPoints[i].slice();
-				
-				for (var i = 0; i < inPoints.length; i++)
-				{
-					var y = height - inPoints[i][1];
-					outPoints[i][1] = y;
-				}
-				
-				return outPoints;
-			}
-			
-			function mapTouch()
-			{
-				mappedTouchPoint[0] = touchPoint[0];
-				mappedTouchPoint[1] = height - touchPoint[1];
-			}
-
 			function onLoad()
 			{
 				var canvas = document.getElementById("myCanvas");
@@ -128,24 +44,12 @@
 				document.addEventListener("deviceready", onDeviceReady, true);
 			}
 			
-			function sleep (time)
-			{
-  				return new Promise((resolve) => setTimeout(resolve, time));
-			}
-			
-			function resizeCanvas()
-			{
-				var div = document.getElementById("myDiv");
-				var canvas = document.getElementById("myCanvas");
-				canvas.width = div.clientWidth;
-				canvas.height = div.clientHeight;
-				drawGraph();
-			}
-
 			function onDeviceReady()
 			{
 
 			}
+			
+			//Touch event handlers
 			
 			function handleStart(evt)
 			{
@@ -214,11 +118,116 @@
 				else navigator.vibrate(0);
 			}
 
+			function readPointsFromFile()
+			{
+				var rawPoints = [];
+			}
+			
+			// Transforms a data set into onscreen points
+			function makePoints()
+			{
+				var inPoints = [[1,65],[2,67],[3,82],[4,90],[5,89],[6,86],[7,93],[8,90],[9,83],[10,86]];
+				
+				var mappedPoints = mapPoints(inPoints);
+
+				var outPoints = flipY(mappedPoints);
+				
+				return outPoints;
+				//return mappedPoints;
+				//return inPoints;
+			}
+			
+			// Scales x and y values to fit screen
+			function mapPoints(inPoints)
+			{
+				var canvas = document.getElementById('myCanvas');
+				width = canvas.width;
+				height = canvas.height;
+				var xMax = inPoints[0][0];
+				var yMax = inPoints[0][1];
+				var xMin = inPoints[0][0];
+				var yMin = inPoints[0][1];
+				
+				var outPoints = [];
+				
+				for (var i = 0; i < inPoints.length; i++) outPoints[i] = inPoints[i].slice();
+
+				for (var i = 0; i < inPoints.length; i++)
+				{
+					if(inPoints[i][0] > xMax) xMax = inPoints[i][0];
+					if(inPoints[i][1] > yMax) yMax = inPoints[i][1];
+					
+					if(inPoints[i][0] < xMin) xMin = inPoints[i][0];
+					if(inPoints[i][1] < yMin) yMin = inPoints[i][1];
+				}
+				
+				var xScale = (width - 12) / (xMax - xMin);
+				var yScale = (height - 12) / (yMax - yMin);
+				
+				console.log("Canvas width:",width);
+				console.log("Canvas height:",height);
+				console.log("xMax:",xMax);
+				console.log("xMin:",xMin);
+				console.log("yMax:",yMax);
+				console.log("yMin:",yMin);
+				console.log("xScale",xScale);
+				console.log("yScale",yScale);
+				
+				for (var i = 0; i < inPoints.length; i++)
+				{
+					outPoints[i][0] = ((inPoints[i][0] - xMin) * xScale) + 6;
+					outPoints[i][1] = ((inPoints[i][1] - yMin) * yScale) + 6;
+				}
+				
+// 				for (var i = 0; i < inPoints.length; i++)
+// 				{
+// 					console.log(inPoints[i][0],inPoints[i][1])
+// 				}
+// 				
+// 				for (var i = 0; i < outPoints.length; i++)
+// 				{
+// 					console.log(outPoints[i][0],outPoints[i][1])
+// 				}
+				
+				return outPoints;
+			}
+
+			// flips the y values so that they appear on screen in the standard graph format
+			function flipY(inPoints)
+			{
+				var outPoints = [];
+				
+				for (var i = 0; i < inPoints.length; i++) outPoints[i] = inPoints[i].slice();
+				
+				for (var i = 0; i < inPoints.length; i++)
+				{
+					var y = height - inPoints[i][1];
+					outPoints[i][1] = y;
+				}
+				
+				return outPoints;
+			}
+			
+			// flips the y on a touch point
+			function mapTouch()
+			{
+				mappedTouchPoint[0] = touchPoint[0];
+				mappedTouchPoint[1] = height - touchPoint[1];
+			}
+			
+			// provides a sleep timer
+			function sleep (time)
+			{
+  				return new Promise((resolve) => setTimeout(resolve, time));
+			}
+			
+			// returns the user to the index screen (not used in this iteration)
 			function goToIndex()
             {
 				window.location = "index.html";
         	}
         	
+        	// draws the graph points onto the canvas
 			function drawGraph ()
         	{
 				var c = document.getElementById("myCanvas");
@@ -244,13 +253,14 @@
 				}
 			}
 			
+			// calculates the distance between two points
 			//http://stackoverflow.com/questions/17692922/check-is-a-point-x-y-is-between-two-points-drawn-on-a-straight-line
-			
 			function distance(A,B)
 			{
 				return Math.sqrt(Math.pow(A[0]-B[0], 2) + Math.pow(A[1]-B[1], 2));
 			}
 			
+			// determines if the given point is on the line between any points in our list
 			function checkPoint(point)
 			{
 				var retVal = 0;
@@ -287,6 +297,7 @@
 				return retVal;
 			}
 			
+			// resizes the canvas if the user rotates the device, and redraws the graph
 			function onRotate()
   			{
   				switch(window.orientation) 
